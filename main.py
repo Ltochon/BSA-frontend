@@ -25,7 +25,34 @@ def hello(name=None):
     url = article["url"]
     return render_template('base.html', title = title, content = content, urltoimage = urltoimage, url = url, cover = cover,artist = artist, titlemusic = titlemusic, preview = preview)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
 
+@app.route("/forecast/")
+def testf():
+    uri = "https://bsaflaskapp-mdefaecyva-oa.a.run.app/forecast/"
+    try:
+        uResponse = requests.get(uri)
+        
+    except requests.ConnectionError:
+       return "Connection Error"   
+
+    data = uResponse.json()
+    return render_template("forecast.html",data = data["img"])
+
+@app.route("/current/")
+def testc():
+    uri = "https://bsaflaskapp-mdefaecyva-oa.a.run.app/current/"
+    try:
+        uResponse = requests.get(uri)
+        
+    except requests.ConnectionError:
+       return "Connection Error"   
+
+    data = uResponse.json()
+    return render_template("current.html",data = data["img"])
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

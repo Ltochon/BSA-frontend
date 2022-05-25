@@ -25,18 +25,21 @@
     #info{
         width: 60%;
         float: left;
-        background-color: #f1f1f1;;
+        background-color: #f8f9faf2;
+        opacity: 0.9;
     }
     .txtinfo{
         font-weight: bold; text-decoration: underline;
     }
-    span{
+    span, a{
         font-size: larger;
     }
+
     #music{
         float : right;
         width: 39%;
-        background-color: #f1f1f1;
+        background-color: #f8f9faf2;
+        opacity: 0.9;
         margin-left: 4%;
     }
     .card-body{
@@ -47,7 +50,7 @@
     margin: 0;
     padding: 0;
     width: 10%;
-    background-color: #f1f1f1;
+    background-color: #f8f9faf2;
     position: fixed;
     height: 100%;
     overflow: auto;
@@ -77,22 +80,27 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-            }
+    }
+    .custom-box{
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: .25rem;
+        padding: 2px;
+    }
 </style>
 
 <body>
     <ul>
-        <li><a class="active" href="#home">Home</a></li>
-        <li><a href="#news">Current weather</a></li>
-        <li><a href="#contact">Forecast weather</a></li>
+        <li><a class="active" href="http://130.223.235.90:8080/">Home</a></li>
+        <li><a href="http://130.223.235.90:8080/current/">Current weather</a></li>
+        <li><a href="http://130.223.235.90:8080/forecast/">Forecast weather</a></li>
       </ul>
     <div class="jumbotron d-flex align-items-center justify-content-center min-vh-100">
-        <div class="container">
+        <div class="container" style="margin-right: 2%;">
             
             <div class="row">
                 <div class="col">
-                    <div class="card bg-light mx-auto">
-                        <div class="card-body">
+                    <div class="card bg-light mx-auto" style="background-color: #f8f9faf2 !important;">
+                        <div class="card-body" class="custom-box">
                             <h1 class="display-3" style="text-align: center;">Hello Professor Vlachos !</h1>
                             <h2 id="time" style="text-align: center; color: darkgreen;"></h2>
                             <div>
@@ -157,29 +165,26 @@
                             
                         </div>
                         <div style="display : flex; margin-top: 2%; margin-right: 1%;">
-                            <div id = "info">
+                            <div id = "info" class="custom-box" style="height: fit-content;">
                                 <h3 class = "title" style="text-align: center; margin-bottom: 2%;">Information of the day</h3>
                                 <div style="float: left; width: 40%;">
                                     <img id="imginfo" src={{urltoimage}} alt="" style="margin-right: 20px; width: -webkit-fill-available;">
                                     <p style="text-align: center;">From <i>www.SRF.ch</i></p>
                                 </div>
-                                <div style="float : right; width: 60%; margin-bottom: 4%;">
-                                    <span class ="txtinfo">URL :</span><span> </span><span id="info4" style="color: blue; text-decoration: underline;"></span>
-                                    <br>
-                                    <span class ="txtinfo">Title :</span><span id="info2"></span>
+                                <div style="float : right; width: 60%; margin-bottom: 5px;">
+                                    <span class ="txtinfo">Title :</span><span id="info2"></span><a href="{{url}}" style="text-decoration: none;"> (Link)</a>
                                     <br>
                                 </div>
                                 <span class ="txtinfo" >Content overview :</span><span> </span><span id="info3" style="height :5em; overflow-y: scroll; margin: 0;"></span>
                                 
                             </div>
-                            <div id="music">
-                                <h3 class = "title" style="text-align: center; margin-bottom: 2%;">Music of the day</h3>
+                            <div id="music" class="custom-box">
+                                <h3 class = "title" style="text-align: center; margin-bottom: 2%;">Suggested music</h3>
                                 <div style="text-align: center;">
                                     <img src={{cover}} alt="">
                                     <p>Title : {{titlemusic}}</p>
                                     <p>Artist : {{artist}}</p>
                                     <audio controls>
-                                        <source src="horse.ogg" type="audio/ogg">
                                         <source src="{{preview}}" type="audio/mpeg">
                                       Your browser does not support the audio element.
                                       </audio>
@@ -209,7 +214,6 @@
     setInterval(time, 1000);
     document.getElementById("info2").innerHTML += " {{title}}";
     document.getElementById("info3").innerHTML += "{{content}}";
-    document.getElementById("info4").innerHTML += " {{url}}";
 
     function play() {
         new Audio("{{preview}}").play();

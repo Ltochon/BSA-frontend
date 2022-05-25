@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+    <div class="jumbotron d-flex align-items-center justify-content-center min-vh-100">
+        <div class="container" style="margin-right: 2%;">
+            
+            <div class="row">
+                <div class="col">
+                    <div class="card bg-light mx-auto" style="background-color: #f8f9faf2 !important;">
+                        <div class="card-body" class="custom-box" style="text-align: center">
+                            <H1 style="color : red; ;"><i>404 error</i></H1>
+                            <h2 style="font-family: Impact;">U GOT VLACHED...</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+
+</body>
+<script>
+    function time() {
+        document.getElementById("time").innerHTML = new Date().toString("hh:mm:ss").split(' ').slice(0, 5).join(' ');
+    };
+
+    setInterval(time, 1000);
+    document.getElementById("info2").innerHTML += " {{title}}";
+    document.getElementById("info3").innerHTML += "{{content}}";
+
+    function play() {
+        new Audio("{{preview}}").play();
+      }
+</script>
+
+</html>
