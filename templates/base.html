@@ -140,23 +140,23 @@
                                         </h4>
                                     </div>
                                     <div style="float : left; text-align: center; width: 20%; margin : auto;">
-                                        <h4 class="value">
-                                            24&#176;C
+                                        <h4 id="temp" class="value">
+                                            Getting...
                                         </h4>
                                     </div>
                                     <div style="float : left; text-align: center; width: 20%; margin : auto;">
-                                        <h4 class="value">
-                                            45%
+                                        <h4 id="hum" class="value">
+                                            Getting...
                                         </h4>
                                     </div>
                                     <div style="float : left; text-align: center; width: 25%; margin : auto;">
-                                        <h4 class="value">
-                                            91%
+                                        <h4 id="aq" class="value">
+                                            Getting...
                                         </h4>
                                     </div>
                                     <div style="float : left; text-align: center; width: 35%; margin : auto;">
                                         <h4 class="value">
-                                            93%
+                                            93/100
                                         </h4>
                                     </div>
                                 </div>
@@ -218,6 +218,20 @@
     function play() {
         new Audio("{{preview}}").play();
       }
+
+    const getData = async () => {
+    const response = await fetch("{{base}}data")
+    const data = await response.json()
+    document.getElementById("temp").innerHTML = data["temp"] + "&#176;C"
+    document.getElementById("hum").innerHTML = data["hum"] + "%"
+    document.getElementById("aq").innerHTML = data["aq"] + "/100"
+    console.log(data)
+    }
+
+    setInterval(getData,10000)
+
+getData()
+
 </script>
 
 </html>
