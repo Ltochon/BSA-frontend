@@ -20,7 +20,7 @@
         font-size: 2em;
     }
     .value{
-        color: darkgreen;
+        color: darkmagenta;
     }
     #info{
         width: 60%;
@@ -90,9 +90,9 @@
 
 <body>
     <ul>
-        <li><a class="active" href="http://130.223.235.90:8080/">Home</a></li>
-        <li><a href="http://130.223.235.90:8080/current/">Current weather</a></li>
-        <li><a href="http://130.223.235.90:8080/forecast/">Forecast weather</a></li>
+        <li><a class="active" href="{{base}}">Home</a></li>
+        <li><a href="{{base}}current/">Current weather</a></li>
+        <li><a href="{{base}}forecast/">Forecast weather</a></li>
       </ul>
     <div class="jumbotron d-flex align-items-center justify-content-center min-vh-100">
         <div class="container" style="margin-right: 2%;">
@@ -102,7 +102,7 @@
                     <div class="card bg-light mx-auto" style="background-color: #f8f9faf2 !important;">
                         <div class="card-body" class="custom-box">
                             <h1 class="display-3" style="text-align: center;">Hello Professor Vlachos !</h1>
-                            <h2 id="time" style="text-align: center; color: darkgreen;"></h2>
+                            <h2 id="time" style="text-align: center; color: darkmagenta;"></h2>
                             <div>
                                 <div id="indoor" style="margin-top : 1%; display : flow-root;">
                                     <h2 class="title" style="text-align: center;margin-bottom: 2%;">Indoor Status </h2>

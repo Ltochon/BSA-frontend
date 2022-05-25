@@ -5,13 +5,14 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-from flask import Flask, jsonify, make_response, send_file, send_from_directory
+from flask import Flask, jsonify, make_response, send_file, send_from_directory, request
 from flask import render_template
 
 app = Flask(__name__, static_folder='files')
 
 @app.route("/")
 def hello(name=None):
+    base = request.base_url
     responsemusic = requests.get("https://api.deezer.com/track/" + str(randint(210000,15000000))).json()
     preview = responsemusic["preview"]
     cover = responsemusic["album"]["cover"]
@@ -23,7 +24,7 @@ def hello(name=None):
     urltoimage = article["urlToImage"]
     content = article["content"].replace('\r\n', ' $ ')
     url = article["url"]
-    return render_template('base.html', title = title, content = content, urltoimage = urltoimage, url = url, cover = cover,artist = artist, titlemusic = titlemusic, preview = preview)
+    return render_template('base.html', title = title, content = content, urltoimage = urltoimage, url = url, cover = cover,artist = artist, titlemusic = titlemusic, preview = preview, base = base)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -38,9 +39,9 @@ def testf():
         
     except requests.ConnectionError:
        return "Connection Error"   
-
+    base = request.base_url.split("forecast/")[0]
     data = uResponse.json()
-    return render_template("forecast.html",data = data["img"])
+    return render_template("forecast.html",data = data["img"], base = base)
 
 @app.route("/current/")
 def testc():
@@ -50,9 +51,9 @@ def testc():
         
     except requests.ConnectionError:
        return "Connection Error"   
-
+    base = request.base_url.split("current/")[0]
     data = uResponse.json()
-    return render_template("current.html",data = data["img"])
+    return render_template("current.html",data = data["img"], base = base)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
