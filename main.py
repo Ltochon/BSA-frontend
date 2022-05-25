@@ -1,4 +1,5 @@
 import os
+from random import randint
 import sys
 import requests
 import json
@@ -11,12 +12,12 @@ app = Flask(__name__, static_folder='files')
 
 @app.route("/")
 def hello(name=None):
-    responsemusic = requests.get("https://api.deezer.com/track/3135556").json()
+    responsemusic = requests.get("https://api.deezer.com/track/" + str(randint(210000,15000000))).json()
     preview = responsemusic["preview"]
     cover = responsemusic["album"]["cover"]
     titlemusic = responsemusic["title"]
     artist = responsemusic["artist"]["name"]
-    responseinfo = requests.get("https://newsapi.org/v2/everything?domains=wsj.com&apiKey=378f666235574b82802cb27ae05424eb").json()
+    responseinfo = requests.get("https://newsapi.org/v2/top-headlines?country=ch&apiKey=378f666235574b82802cb27ae05424eb").json()
     article = responseinfo["articles"][0]
     title = article["title"]
     urltoimage = article["urlToImage"]
