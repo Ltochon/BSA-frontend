@@ -155,8 +155,8 @@
                                         </h4>
                                     </div>
                                     <div style="float : left; text-align: center; width: 35%; margin : auto;">
-                                        <h4 class="value">
-                                            93/100
+                                        <h4 id = "pred" class="value">
+                                            Getting...
                                         </h4>
                                     </div>
                                 </div>
@@ -207,30 +207,38 @@
 
 </body>
 <script>
-    function time() {
+    function time() { //function to create a updating clock
         document.getElementById("time").innerHTML = new Date().toString("hh:mm:ss").split(' ').slice(0, 5).join(' ');
     };
 
-    setInterval(time, 1000);
+    setInterval(time, 1000); //intervall between calls of the time function (in milliseconds)
     document.getElementById("info2").innerHTML += " {{title}}";
     document.getElementById("info3").innerHTML += "{{content}}";
 
-    function play() {
+    function play() { //function to play the audio preview
         new Audio("{{preview}}").play();
       }
 
-    const getData = async () => {
-    const response = await fetch("{{base}}data")
-    const data = await response.json()
+    const getData = async () => { //async calls to get data from the sensor
+    const response = await fetch("{{base}}data") //call URL
+    const data = await response.json() //wait and transform data to json
     document.getElementById("temp").innerHTML = data["temp"] + "&#176;C"
     document.getElementById("hum").innerHTML = data["hum"] + "%"
     document.getElementById("aq").innerHTML = data["aq"] + "/100"
-    console.log(data)
     }
 
     setInterval(getData,10000)
 
+    const getData2 = async () => { //async calls to get data from the server
+    const response2 = await fetch("{{base}}pred") //call URL
+    const data2 = await response2.json() //wait and transform data to json
+    document.getElementById("pred").innerHTML = Math.round(parseInt(data2["value"])).toString() + "/100"
+    }
+
+    setInterval(getData2,100000)
+
 getData()
+getData2()
 
 </script>
 

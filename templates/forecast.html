@@ -118,18 +118,5 @@
 
 
 </body>
-<script>
-    function time() {
-        document.getElementById("time").innerHTML = new Date().toString("hh:mm:ss").split(' ').slice(0, 5).join(' ');
-    };
-
-    setInterval(time, 1000);
-    document.getElementById("info2").innerHTML += " {{title}}";
-    document.getElementById("info3").innerHTML += "{{content}}";
-
-    function play() {
-        new Audio("{{preview}}").play();
-      }
-</script>
 
 </html>

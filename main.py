@@ -11,12 +11,12 @@ import time
 from flask import Flask, jsonify, make_response, send_file, send_from_directory, request
 from flask import render_template
 
-app = Flask(_name_, static_folder='files')
+app = Flask(__name__, static_folder='files')
 
 
-class Bme680_manager:
+class Bme680_manager: #class to manage sensors
     
-    def _init_(self):
+    def __init__(self):
         
         try:
             self.__sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
@@ -47,7 +47,7 @@ class Bme680_manager:
         sensor = self.get_sensor()
         burn_in_data = []
         i = 0
-        while i < t+3:
+        while i < t+3: #test air quality during 3 sec to create baseline
             time.sleep(1)
             if sensor.get_sensor_data() and sensor.data.heat_stable:
                 gas = sensor.data.gas_resistance
@@ -56,7 +56,7 @@ class Bme680_manager:
         gas_baseline = sum(burn_in_data[3:t+3]) / t
         return gas_baseline
     
-    def get_air_quality(self,g_b):
+    def get_air_quality(self,g_b): #calculation of air quality
         sensor = self.get_sensor()
         gas = sensor.data.gas_resistance
         gas_offset = g_b - gas
@@ -86,16 +86,18 @@ class Bme680_manager:
     def get_sensor(self):
         return self.__sensor
 
-@app.route("/")
+@app.route("/") #mainpage
 def hello(name=None):
 
     base = request.base_url
-    responsemusic = requests.get("https://api.deezer.com/track/" + str(randint(210000,15000000))).json()
+    responsemusic = requests.get("https://api.deezer.com/track/" + str(randint(210000,15000000))).json() #get a random track
+    #store information concerning the track
     preview = responsemusic["preview"]
     cover = responsemusic["album"]["cover"]
     titlemusic = responsemusic["title"]
     artist = responsemusic["artist"]["name"]
-    responseinfo = requests.get("https://newsapi.org/v2/top-headlines?country=ch&apiKey=378f666235574b82802cb27ae05424eb").json()
+    responseinfo = requests.get("https://newsapi.org/v2/top-headlines?country=ch&apiKey=378f666235574b82802cb27ae05424eb").json() #get daily informations
+    #store information concerning the information
     article = responseinfo["articles"][0]
     title = article["title"]
     urltoimage = article["urlToImage"]
@@ -103,19 +105,24 @@ def hello(name=None):
     url = article["url"]
     return render_template('base.html', title = title, content = content, urltoimage = urltoimage, url = url, cover = cover,artist = artist, titlemusic = titlemusic, preview = preview, base = base)
 
-@app.errorhandler(404)
+@app.errorhandler(404) #create custom 404 error's page
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
-@app.route("/data/")
+@app.route("/pred/") #access to automl value
+def data2():
+    data = requests.get("https://bsaiotprojectbackend-mdefaecyva-oa.a.run.app/predict/").json()
+
+    return jsonify(data)
+
+@app.route("/data/") #return dict with sensor values
 def data():
     try:
         sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
     except (RuntimeError, IOError):
         sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
 
-    
     sensor_manager = Bme680_manager()
 
     gas_baseline = sensor_manager.get_gas_baseline(2)
@@ -134,7 +141,7 @@ def data():
 
 @app.route("/forecast/")
 def testf():
-    uri = "https://bsaiotprojectbackend-mdefaecyva-oa.a.run.app/forecast/"
+    uri = "https://bsaiotprojectbackend-mdefaecyva-oa.a.run.app/forecast/" #call forcast api on docker server
     try:
         uResponse = requests.get(uri)
         
@@ -142,11 +149,11 @@ def testf():
        return "Connection Error"   
     base = request.base_url.split("forecast/")[0]
     data = uResponse.json()
-    return render_template("forecast.html",data = data["img"], base = base)
+    return render_template("forecast.html",data = data["img"], base = base) #print img
 
 @app.route("/current/")
 def testc():
-    uri = "https://bsaiotprojectbackend-mdefaecyva-oa.a.run.app/current/"
+    uri = "https://bsaiotprojectbackend-mdefaecyva-oa.a.run.app/current/" #call current api on docker server
     try:
         uResponse = requests.get(uri)
         
@@ -154,7 +161,7 @@ def testc():
        return "Connection Error"   
     base = request.base_url.split("current/")[0]
     data = uResponse.json()
-    return render_template("current.html",data = data["img"], base = base)
+    return render_template("current.html",data = data["img"], base = base) #print img
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
