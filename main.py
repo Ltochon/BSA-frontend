@@ -13,6 +13,8 @@ from flask import render_template
 
 app = Flask(__name__, static_folder='files')
 
+#CHANGE HERE WITH YOU API KEY
+newsapikey = "378f666235574b82802cb27ae05424eb"
 
 class Bme680_manager: #class to manage sensors
     
@@ -96,7 +98,7 @@ def hello(name=None):
     cover = responsemusic["album"]["cover"]
     titlemusic = responsemusic["title"]
     artist = responsemusic["artist"]["name"]
-    responseinfo = requests.get("https://newsapi.org/v2/top-headlines?country=ch&apiKey=378f666235574b82802cb27ae05424eb").json() #get daily informations
+    responseinfo = requests.get(f"https://newsapi.org/v2/top-headlines?country=ch&apiKey={newsapikey}").json() #get daily informations
     #store information concerning the information
     article = responseinfo["articles"][0]
     title = article["title"]
